@@ -1,4 +1,5 @@
 from auth import login
+from student import add_student, view_students
 
 
 def admin_dashboard():
@@ -15,9 +16,9 @@ def admin_dashboard():
         choice = input("Enter choice:")
 
         if choice == "1":
-            print("Add student")
+            add_student()
         elif choice == "2":
-            print("View Student")
+            view_students()
         elif choice == "3":
             print("Search student")
         elif choice == "4":
