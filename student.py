@@ -111,3 +111,73 @@ def search_student():
     cursor.close()
     connection.close()
           
+
+
+def update_student():
+    connection = connect_db()
+    cursor = connection.cursor()
+
+    student_id = int(input("Enter Student ID: "))
+
+    
+    query = """
+    SELECT * FROM students
+    WHERE student_id = %s;
+    """
+
+    cursor.execute(query, (student_id,))
+    student = cursor.fetchone()
+
+    if student:
+        print("Enter New Student Details")
+
+        first_name = input("Enter First Name: ")
+        last_name = input("Enter Last Name: ")
+        gender = input("Enter Gender (Male/Female/Other): ")
+        dob = input("Enter DOB (YYYY-MM-DD): ")
+        phone = input("Enter Phone Number: ")
+        email = input("Enter Email-id: ")
+        address = input("Enter Address: ")
+        course = input("Enter Course Name: ")
+        semester = int(input("Enter Semester: "))
+
+        query = """
+        UPDATE students
+        SET
+            first_name = %s,
+            last_name = %s,
+            gender = %s,
+            dob = %s,
+            phone = %s,
+            email = %s,
+            address = %s,
+            course = %s,
+            semester = %s
+        WHERE
+            student_id = %s;
+        """
+
+        cursor.execute(
+            query,
+            (
+                first_name,
+                last_name,
+                gender,
+                dob,
+                phone,
+                email,
+                address,
+                course,
+                semester,
+                student_id
+            )
+        )
+
+        connection.commit()
+        print("Student Updated Successfully!")
+
+    else:
+        print("Student Not Found!")
+
+    cursor.close()
+    connection.close()
