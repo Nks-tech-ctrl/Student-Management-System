@@ -76,3 +76,38 @@ def view_students():
 
         cursor.close()
         connection.close()
+
+def search_student():
+    connection=connect_db()
+    cursor=connection.cursor()
+
+    student_id=int(input("Enter student id : "))
+
+    query =""" 
+      SELECT *FROM students 
+      where student_id = %s;
+"""
+    cursor.execute(query,(student_id,))
+
+    student =cursor.fetchone()
+
+    
+    if student:
+        print("-" * 50)
+        print(f"Student ID      : {student[0]}")
+        print(f"First Name      : {student[1]}")
+        print(f"Last Name       : {student[2]}")
+        print(f"Gender          : {student[3]}")
+        print(f"DOB             : {student[4]}")
+        print(f"Phone           : {student[5]}")
+        print(f"Email           : {student[6]}")
+        print(f"Address         : {student[7]}")
+        print(f"Course          : {student[8]}")
+        print(f"Semester        : {student[9]}")
+        print(f"Addmission Date : {student[10]}")
+    else:
+        print("Student Not Found!")
+        
+    cursor.close()
+    connection.close()
+          

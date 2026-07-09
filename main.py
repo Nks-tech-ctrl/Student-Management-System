@@ -1,5 +1,5 @@
 from auth import login
-from student import add_student, view_students
+from student import add_student, view_students , search_student
 
 
 def admin_dashboard():
@@ -20,7 +20,7 @@ def admin_dashboard():
         elif choice == "2":
             view_students()
         elif choice == "3":
-            print("Search student")
+            search_student()
         elif choice == "4":
             print("Update Student")
         elif choice == "5":
