@@ -40,7 +40,8 @@ def add_student():
 """
     cursor.execute(
         query,
-        (first_name, last_name, gender, dob, phone, email, address, course, semester),
+        (first_name, last_name, gender, dob, phone, email, address, course,
+         semester),
     )
     connection.commit()
     print("Student Added successfully!")
@@ -77,21 +78,21 @@ def view_students():
         cursor.close()
         connection.close()
 
+
 def search_student():
-    connection=connect_db()
-    cursor=connection.cursor()
+    connection = connect_db()
+    cursor = connection.cursor()
 
-    student_id=int(input("Enter student id : "))
+    student_id = int(input("Enter student id : "))
 
-    query =""" 
+    query = """ 
       SELECT *FROM students 
       where student_id = %s;
 """
-    cursor.execute(query,(student_id,))
+    cursor.execute(query, (student_id, ))
 
-    student =cursor.fetchone()
+    student = cursor.fetchone()
 
-    
     if student:
         print("-" * 50)
         print(f"Student ID      : {student[0]}")
@@ -107,10 +108,9 @@ def search_student():
         print(f"Addmission Date : {student[10]}")
     else:
         print("Student Not Found!")
-        
+
     cursor.close()
     connection.close()
-          
 
 
 def update_student():
@@ -119,13 +119,12 @@ def update_student():
 
     student_id = int(input("Enter Student ID: "))
 
-    
     query = """
     SELECT * FROM students
     WHERE student_id = %s;
     """
 
-    cursor.execute(query, (student_id,))
+    cursor.execute(query, (student_id, ))
     student = cursor.fetchone()
 
     if student:
@@ -169,13 +168,48 @@ def update_student():
                 address,
                 course,
                 semester,
-                student_id
-            )
+                student_id,
+            ),
         )
 
         connection.commit()
         print("Student Updated Successfully!")
 
+    else:
+        print("Student Not Found!")
+
+    cursor.close()
+    connection.close()
+
+
+def delete_student():
+    connection = connect_db()
+    cursor = connection.cursor()
+
+    student_id = int(input("Enter student id to delete: "))
+
+    query = """
+    Select  *from students
+    where student_id=%s;
+"""
+    cursor.execute(query, (student_id, ))
+    student = cursor.fetchone()
+
+    if student:
+        confirmation = input(
+            "Are you sure you want to delete this student(yes/no):")
+        if confirmation == "yes":
+            query = """
+             DELETE From students 
+             Where student_id=%s;                        
+"""
+            cursor.execute(query, (student_id, ))
+            connection.commit()
+            print("Student deleted successfully")
+        elif confirmation == "no":
+            print("Deletion Cancelled")
+        else:
+            print("Invalid input!")
     else:
         print("Student Not Found!")
 
