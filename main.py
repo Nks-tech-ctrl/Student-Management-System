@@ -1,5 +1,6 @@
 from auth import login
 from student import add_student, view_students , search_student,update_student,delete_student
+from report import reports_menu
 
 
 def admin_dashboard():
@@ -26,7 +27,7 @@ def admin_dashboard():
         elif choice == "5":
             delete_student()
         elif choice == "6":
-            print("Reports")
+            reports_menu()
         elif choice == "7":
             print("Logout")
             break
