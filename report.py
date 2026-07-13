@@ -33,3 +33,19 @@ def total_student():
     connection.close()
 
 def student_course():
+    connection=connect_db()
+    cursor=connection.cursor()
+
+    query="""
+    Select Course,Count(*)
+    From Students
+    Group By course;
+"""
+    cursor.execute(query)
+    courses=cursor.fetchall()
+
+    for course in courses:
+        print(f"course :{course[0]} , Total Students :{course[1]}")
+
+    cursor.close()
+    connection.close()
