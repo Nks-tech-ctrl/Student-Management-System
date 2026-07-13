@@ -49,3 +49,21 @@ def student_course():
 
     cursor.close()
     connection.close()
+
+def student_semester():
+    connection=connect_db()
+    cursor=connection.cursor()
+
+    query="""
+    Select Semester ,count(*)
+    From Students
+    Group by semester;
+"""
+    cursor.execute(query)
+    semesters=cursor.fetchall()
+    
+    for semester in semesters:
+        print(f"semester :{semester[0]}, Total Students:{semester[1]}")
+
+    cursor.close()
+    connection.close()
