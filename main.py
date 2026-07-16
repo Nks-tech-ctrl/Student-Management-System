@@ -1,6 +1,14 @@
 from auth import login
-from student import add_student, view_students , search_student,update_student,delete_student
+from student import (
+    add_student,
+    view_students,
+    search_student,
+    update_student,
+    delete_student,
+    view_profile,
+)
 from report import reports_menu
+from student_auth import student_login,change_password
 
 
 def admin_dashboard():
@@ -23,7 +31,7 @@ def admin_dashboard():
         elif choice == "3":
             search_student()
         elif choice == "4":
-             update_student()
+            update_student()
         elif choice == "5":
             delete_student()
         elif choice == "6":
@@ -33,6 +41,26 @@ def admin_dashboard():
             break
         else:
             print("Invalid choice!")
+
+
+def student_dashboard(student_id):
+    while True:
+        print("========== Student Dashboard ==========")
+        print("1.View Profile")
+        print("2.Change Password")
+        print("3.Logout")
+
+        choice = input("Enter your choice:")
+
+        if choice == "1":
+            view_profile(student_id)
+        elif choice == "2":
+            change_password(student_id)
+        elif choice == "3":
+            print("Logout")
+            break
+        else:
+            print("Invalid choice")
 
 
 def home_menu():
@@ -48,7 +76,10 @@ def home_menu():
             if login():
                 admin_dashboard()
         elif choice == "2":
-            print("Student Dashboard")
+            student_id = student_login()
+
+            if student_id:
+                student_dashboard(student_id)
         elif choice == "3":
             print("Thanks for visiting.")
             break

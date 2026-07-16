@@ -14,6 +14,9 @@ def add_student():
     course = input("Enter Course Name:")
     semester = int(input("Enter Semester:"))
 
+    username = input("Enter username:")
+    password = input("Enter password:")
+
     query = """
     INSERT INTO students(
      first_name,
@@ -40,9 +43,25 @@ def add_student():
 """
     cursor.execute(
         query,
-        (first_name, last_name, gender, dob, phone, email, address, course,
-         semester),
+        (first_name, last_name, gender, dob, phone, email, address, course, semester),
     )
+    connection.commit()
+
+    student_id = cursor.lastrowid
+
+    query = """
+     Insert into student_login(
+     student_id,
+     username,
+     password
+     ) 
+     Values(
+      %s,
+      %s,
+      %s
+    );
+"""
+    cursor.execute(query, (student_id, username, password))
     connection.commit()
     print("Student Added successfully!")
 
@@ -89,7 +108,7 @@ def search_student():
       SELECT *FROM students 
       where student_id = %s;
 """
-    cursor.execute(query, (student_id, ))
+    cursor.execute(query, (student_id,))
 
     student = cursor.fetchone()
 
@@ -124,7 +143,7 @@ def update_student():
     WHERE student_id = %s;
     """
 
-    cursor.execute(query, (student_id, ))
+    cursor.execute(query, (student_id,))
     student = cursor.fetchone()
 
     if student:
@@ -192,18 +211,17 @@ def delete_student():
     Select  *from students
     where student_id=%s;
 """
-    cursor.execute(query, (student_id, ))
+    cursor.execute(query, (student_id,))
     student = cursor.fetchone()
 
     if student:
-        confirmation = input(
-            "Are you sure you want to delete this student(yes/no):")
+        confirmation = input("Are you sure you want to delete this student(yes/no):")
         if confirmation == "yes":
             query = """
              DELETE From students 
              Where student_id=%s;                        
 """
-            cursor.execute(query, (student_id, ))
+            cursor.execute(query, (student_id,))
             connection.commit()
             print("Student deleted successfully")
         elif confirmation == "no":
@@ -213,5 +231,35 @@ def delete_student():
     else:
         print("Student Not Found!")
 
+    cursor.close()
+    connection.close()
+
+def view_profile(student_id):
+    connection=connect_db()
+    cursor=connection.cursor()
+    
+    query = """ 
+      SELECT *FROM students 
+      where student_id = %s;
+"""
+    cursor.execute(query, (student_id,))
+
+    student = cursor.fetchone()
+    if student:
+        print("-" * 50)
+        print(f"Student ID      : {student[0]}")
+        print(f"First Name      : {student[1]}")
+        print(f"Last Name       : {student[2]}")
+        print(f"Gender          : {student[3]}")
+        print(f"DOB             : {student[4]}")
+        print(f"Phone           : {student[5]}")
+        print(f"Email           : {student[6]}")
+        print(f"Address         : {student[7]}")
+        print(f"Course          : {student[8]}")
+        print(f"Semester        : {student[9]}")
+        print(f"Addmission Date : {student[10]}")
+    else:
+        print("Student Not Found!")
+    
     cursor.close()
     connection.close()
