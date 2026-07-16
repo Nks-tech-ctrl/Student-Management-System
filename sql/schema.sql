@@ -30,7 +30,6 @@ CREATE TABLE students (
 
 
 -- Student Login Table
-
 CREATE TABLE student_login (
     login_id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT UNIQUE,
